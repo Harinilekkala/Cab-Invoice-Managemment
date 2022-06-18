@@ -9,6 +9,8 @@ namespace Cab_Invoice
 
     public class InvoiceGenerator
     {
+        
+        RideRepository data;
         private readonly double MINIMUM_COST_PER_KM = 10;
         private readonly int COST_PER_TIME = 1;
         private readonly double MINIMUM_FARE = 5;
@@ -32,25 +34,7 @@ namespace Cab_Invoice
             }
             return Math.Max(totalFare, MINIMUM_FARE);
         }
-        public double MultipleRides(Ride[] rides)
-        {
-            double totalFare = 0;
-            try
-            {
-                foreach (var ride in rides)
-                {
-                    totalFare += CalculateFare(ride);
-                }
-            }
-            catch (CustomException)
-            {
-                throw new CustomException(CustomException.ExceptionType.NULL_RIDES, "Rides Are Null");
-            }
-            Console.WriteLine("Total Fare: " + totalFare);
-            return totalFare;
-        }
-
-        public EnhancedInvoice CalculateMultipleRides(Ride[] rides)
+        public EnhancedInvoice MultipleRides(Ride[] rides)
         {
             double totalFare = 0;
             try
@@ -66,7 +50,8 @@ namespace Cab_Invoice
             }
             return new EnhancedInvoice(rides.Length, totalFare);
         }
+
     }
-    }
+}
 
 
