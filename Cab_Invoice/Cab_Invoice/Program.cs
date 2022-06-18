@@ -12,9 +12,9 @@ namespace CabInvoice
         public static void Main(string[] args)
         
         {
-                 InvoiceGenerator getMethod = new InvoiceGenerator();
+                 InvoiceGenerator getMethod = new InvoiceGenerator(RideType.NORMAL); 
 
-                Console.WriteLine("1 for Total Fare\n2 for Multiple Rides\n3 for Enhanced Invoice\n4 for Invoice for UserID");
+                Console.WriteLine("1 for Total Fare\n2 for Multiple Rides\n3 for Enhanced Invoice\n4 for Invoice for UserID\n5 for premium Ride");
                 Console.WriteLine("Enter a Number");
                 int userInput = Convert.ToInt32(Console.ReadLine());
                 switch (userInput)
@@ -53,7 +53,17 @@ namespace CabInvoice
                             Console.WriteLine("TotalFare: " + invoice.totalFare + "\nNumberOfRides: " + invoice.numberOfRides + "\nAverage Fare: " + invoice.averageFare);
                             break;
                         }
-                    default:
+                case 5:
+                    {
+                        InvoiceGenerator newMethod = new InvoiceGenerator(RideType.PREMIUM);
+                        double distance = 10;
+                        int time = 10;
+                        Ride ride = new Ride(distance, time);
+                        double result = newMethod.CalculateFare(ride);
+                        Console.WriteLine("Total Fare: " + result);
+                        break;
+                    }
+                default:
                         {
                             Console.WriteLine("Enter a Valid Number");
                             break;

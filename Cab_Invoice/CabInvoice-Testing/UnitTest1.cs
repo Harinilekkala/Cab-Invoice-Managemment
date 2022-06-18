@@ -4,12 +4,13 @@ namespace CabInvoice_Testing
 {
     public class Tests
     {
+        InvoiceGenerator getMethod = new InvoiceGenerator(RideType.NORMAL);
+
         [Test]
         public void GivenDistanceAndTime_ShouldReturnExpectedTotalFare()
         {
             double distance = 10;
             int time = 10, expected = 110;
-            InvoiceGenerator getMethod = new InvoiceGenerator();
             Ride ride = new Ride(distance, time);
             Assert.AreEqual(expected, getMethod.CalculateFare(ride));
         }
@@ -17,7 +18,6 @@ namespace CabInvoice_Testing
         public void GivenMultipleRideData_ShouldReturnExpectedTotalFare()
         {
             double expected = 325;
-            InvoiceGenerator getMethod = new InvoiceGenerator();
             Ride[] ride = { new Ride(10, 10), new Ride(10, 5), new Ride(10, 10) };
             var result = getMethod.MultipleRides(ride);
             Assert.AreEqual(expected, result.totalFare);
@@ -25,7 +25,6 @@ namespace CabInvoice_Testing
         [Test]
         public void GivenMultipleRideData_ShouldReturnExpectedTotalFare_numberOfRides_AverageFare()
         {
-            InvoiceGenerator getMethod = new InvoiceGenerator();
             Ride[] ride = { new Ride(10, 10), new Ride(10, 5), new Ride(10, 10) };
             double totalFare = 325, numberOfRides = ride.Length, averageFare = totalFare / numberOfRides;
             var result = getMethod.MultipleRides(ride);
@@ -39,11 +38,26 @@ namespace CabInvoice_Testing
             RideRepository rideRepository = new RideRepository();
             Ride[] ride = { new Ride(10, 10), new Ride(10, 5), new Ride(10, 10) };
             double totalFare = 325, numberOfRides = ride.Length, averageFare = totalFare / numberOfRides;
-            rideRepository.AddRides("harini", ride);
-            var result = rideRepository.UserInvoice("harini");
+            rideRepository.AddRides("Harini", ride);
+            var result = rideRepository.UserInvoice("Harini");
             Assert.AreEqual(totalFare, result.totalFare);
             Assert.AreEqual(averageFare, result.averageFare);
             Assert.AreEqual(numberOfRides, result.numberOfRides);
+        }
+        [Test]
+        public void GivenRideTypes_ShouldReturnAppropriatedResults()
+        {
+            double distance = 10;
+            int time = 10, expected = 110;
+            InvoiceGenerator getMethod = new InvoiceGenerator(RideType.NORMAL);
+            Ride ride = new Ride(distance, time);
+            Assert.AreEqual(expected, getMethod.CalculateFare(ride));
+
+            double premiumDistance = 10;
+            int premiumTime = 10, premiumExpected = 170;
+            InvoiceGenerator premiumtMethod = new InvoiceGenerator(RideType.PREMIUM);
+            Ride premiumRide = new Ride(premiumDistance, premiumTime);
+            Assert.AreEqual(premiumExpected, premiumtMethod.CalculateFare(premiumRide));
         }
     }
 }

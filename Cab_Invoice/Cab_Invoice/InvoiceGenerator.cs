@@ -6,14 +6,34 @@ using System.Threading.Tasks;
 
 namespace Cab_Invoice
 {
-
+    public enum RideType { NORMAL, PREMIUM }
     public class InvoiceGenerator
     {
-        
-        RideRepository data;
-        private readonly double MINIMUM_COST_PER_KM = 10;
-        private readonly int COST_PER_TIME = 1;
-        private readonly double MINIMUM_FARE = 5;
+        private readonly double MINIMUM_COST_PER_KM;
+        private readonly int COST_PER_TIME;
+        private readonly double MINIMUM_FARE;
+        public InvoiceGenerator(RideType rideType)
+        {
+            try
+            {
+                if (rideType.Equals(RideType.NORMAL))
+                {
+                    this.MINIMUM_COST_PER_KM = 10;
+                    this.COST_PER_TIME = 1;
+                    this.MINIMUM_FARE = 5;
+                }
+                if (rideType.Equals(RideType.PREMIUM))
+                {
+                    this.MINIMUM_COST_PER_KM = 15;
+                    this.COST_PER_TIME = 2;
+                    this.MINIMUM_FARE = 20;
+                }
+            }
+            catch (CustomException)
+            {
+                throw new CustomException(CustomException.ExceptionType.INVALID_RIDE_TYPE, "Invalid Ride Type");
+            }
+        }
         public double CalculateFare(Ride ride)
         {
             double totalFare = 0;

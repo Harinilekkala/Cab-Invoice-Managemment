@@ -6,49 +6,51 @@ using System.Threading.Tasks;
 
 namespace Cab_Invoice
 {
-    public class RideRepository
-    { 
     
-        Dictionary<string, List<Ride>> user;
-        public RideRepository()
+
+        public class RideRepository
         {
-            this.user = new Dictionary<string, List<Ride>>();
-        }
-        public void AddRides(string userid, Ride[] rides)
-        {
-            bool result = this.user.ContainsKey(userid);
-            try
+            Dictionary<string, List<Ride>> user;
+            public RideRepository()
             {
-                if (!result)
+                this.user = new Dictionary<string, List<Ride>>();
+            }
+            public void AddRides(string userid, Ride[] rides)
+            {
+                bool result = this.user.ContainsKey(userid);
+                try
                 {
-                    List<Ride> list = new List<Ride>();
-                    list.AddRange(rides);
-                    user.Add(userid, list);
+                    if (!result)
+                    {
+                        List<Ride> list = new List<Ride>();
+                        list.AddRange(rides);
+                        user.Add(userid, list);
+                    }
+                }
+                catch (CustomException)
+                {
+                    throw new CustomException(CustomException.ExceptionType.NULL_RIDES, "Rides Are Null");
                 }
             }
-            catch (CustomException)
+            public Ride[] GetRides(string userid)
             {
-                throw new CustomException(CustomException.ExceptionType.NULL_RIDES, "Rides Are Null");
+                try
+                {
+                    return this.user[userid].ToArray();
+                }
+                catch (Exception)
+                {
+                    throw new CustomException(CustomException.ExceptionType.INVALID_USER_ID, "Invalid UserID");
+                }
+            }
+            public EnhancedInvoice UserInvoice(string userid)
+            {
+                InvoiceGenerator invoiceGenerator = new InvoiceGenerator(RideType.NORMAL);
+                Console.WriteLine("UserID: " + userid);
+                return invoiceGenerator.MultipleRides(GetRides(userid));
             }
         }
-        public Ride[] GetRides(string userid)
-        {
-            try
-            {
-                return this.user[userid].ToArray();
-            }
-            catch (Exception)
-            {
-                throw new CustomException(CustomException.ExceptionType.INVALID_USER_ID, "Invalid UserID");
-            }
-        }
-        public EnhancedInvoice UserInvoice(string userid)
-        {
-            InvoiceGenerator invoiceGenerator = new InvoiceGenerator();
-            Console.WriteLine("UserID: " + userid);
-            return invoiceGenerator.MultipleRides(GetRides(userid));
-        }
+
     }
 
-}
 
