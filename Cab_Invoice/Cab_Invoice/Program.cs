@@ -11,9 +11,12 @@ namespace CabInvoice
     {
         public static void Main(string[] args)
         {
-            InvoiceGenerator getMethod = new InvoiceGenerator(10.0, 5);
-            double fare = getMethod.CalculateFare();
-            Console.WriteLine("Fare: " + fare);
+            Ride[] ride = { new Ride(10, 10), new Ride(10, 5) };
+            InvoiceGenerator getMethod = new InvoiceGenerator();
+            double fare = getMethod.MultipleRides(ride);
+            
+            
+           // getMethod.CalculateFare();
         }
     }
 }
