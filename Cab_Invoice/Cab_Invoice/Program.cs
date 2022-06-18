@@ -1,7 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using Cab_Invoice;
 
-//InvoiceGenerator invoice = new InvoiceGenerator();
+
 
 using System;
 
@@ -11,12 +11,43 @@ namespace CabInvoice
     {
         public static void Main(string[] args)
         {
-            Ride[] ride = { new Ride(10, 10), new Ride(10, 5) };
             InvoiceGenerator getMethod = new InvoiceGenerator();
-            double fare = getMethod.MultipleRides(ride);
-            
-            
-           // getMethod.CalculateFare();
+
+            Console.WriteLine("1 for Total Fare\n2 for Multiple Rides\n3 for Enhanced Invoice");
+            Console.WriteLine("Enter a Number");
+            int userInput = Convert.ToInt32(Console.ReadLine());
+            switch (userInput)
+            {
+                case 1:
+                    {
+                        double distance = 10;
+                        int time = 10;
+                        Ride ride = new Ride(distance, time);
+                        double result = getMethod.CalculateFare(ride);
+                        Console.WriteLine("Total Fare: " + result);
+                        break;
+                    }
+                case 2:
+                    {
+                        Ride[] ride = { new Ride(10, 10), new Ride(10, 5), new Ride(10, 10) };
+                        EnhancedInvoice result = getMethod.CalculateMultipleRides(ride);
+                        Console.WriteLine("Total Fare for Multiple Rides:" + result.totalFare);
+                        break;
+                    }
+                case 3:
+                    {
+                        Ride[] ride = { new Ride(10, 10), new Ride(10, 5), new Ride(10, 10) };
+                        EnhancedInvoice invoice = getMethod.CalculateMultipleRides(ride);
+                        Console.WriteLine("TotalFare: " + invoice.totalFare + "\nNumberOfRides: " + invoice.numberOfRides + "\nAverage Fare: " + invoice.averageFare);
+                        break;
+                    }
+                default:
+                    {
+                        Console.WriteLine("Enter a Valid Number");
+                        break;
+                    }
+            }
+
         }
     }
 }

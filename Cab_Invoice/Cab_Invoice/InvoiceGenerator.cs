@@ -49,6 +49,23 @@ namespace Cab_Invoice
             Console.WriteLine("Total Fare: " + totalFare);
             return totalFare;
         }
+
+        public EnhancedInvoice CalculateMultipleRides(Ride[] rides)
+        {
+            double totalFare = 0;
+            try
+            {
+                foreach (var ride in rides)
+                {
+                    totalFare += CalculateFare(ride);
+                }
+            }
+            catch (CustomException)
+            {
+                throw new CustomException(CustomException.ExceptionType.NULL_RIDES, "Rides Are Null");
+            }
+            return new EnhancedInvoice(rides.Length, totalFare);
+        }
     }
     }
 
